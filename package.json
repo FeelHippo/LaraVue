@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "bootswatch": "^4.5.0"
+        "bootswatch": "^4.5.0",
+        "vuedraggable": "^2.24.0"
     }
 }

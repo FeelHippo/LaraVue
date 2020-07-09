@@ -22215,6 +22215,11 @@ body {
   height: auto;
 }
 
+.taskCard:hover {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
 .frontCardButtons {
   width: 100%;
   display: flex;

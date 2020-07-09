@@ -78,6 +78,10 @@ html, body {
     height: auto;
 }
 
+.taskCard:hover {
+    cursor: grab;
+}
+
 .frontCardButtons {
     width: 100%;
     display: flex;
