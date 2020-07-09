@@ -50,59 +50,41 @@ npm run hot
 The app is now running on `http://localhost:8000`.
 
 ### SCSS:
-For this exercise, I used a cool [stylesheet](https://bootswatch.com/sketchy/), to make my life easier.
+For this exercise, I used a cool [stylesheet](https://bootswatch.com/minty/), to make my life easier.
 
+## DEMO
+[Here is a little demo](https://ttprivatenew.s3.amazonaws.com/pulse/feel-hippo/attachments/14048262/Laravel+VueJs+ToDo+App.mp4)
 
-### First exercise
-We have a list of 15 tasks and we need to represent them as in a TodoApp. You are free to use any way to organize your components, styles, etc. You have to use `Vue` but you are free to use any kind of styles or UI Library. This project is ready to work with ES6/ES7 so feel free to use the last characteristics of JavaScript in your code.
+### Notes:
 
-The minimum structure has to be:
-
+I was an absolute noob at Laravel and VueJs, until... 48 hours ago, so I am sure a few things are not very idiomatic. 
+I have tried to keep everything as simple as possible:
+- app.scss: just a simple grid to arrange the front page, Bootstrap will take care of the rest
+- index.blade.php: no props, just three separate components that can be developed further
+- app.js: I am a big axios fan, so...
+```javascript
+Vue.prototype.$http = axios;
 ```
-----------------------------------------
-|                 HEADER               |
-----------------------------------------
-|                                      |
-|   STATUS 1     STATUS 2    STATUS 3  |
-|   --------     --------    --------  |
-|  |  TASK  |   |  TASK  |  |  TASK |  |
-|   --------     --------    --------  |
-|                                      |
-|   --------     --------    --------  |
-|  |  TASK  |   |  TASK  |  |  TASK  | |
-|   --------     --------    --------  |
-|                                      |
-----------------------------------------
-|                 FOOTER               |
-----------------------------------------
+- api.php: no misteries here, this is a simple project, so I didn't use any controllers, I fixed the Post and Patch methods as:
+```javascript
+Route::post('tasks/store', function(Request $request) {
+        return App\Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'status_id' => $request->status_id,
+        ]);
+    });
+    
+Route::patch('tasks/{id}', function(Request $request, $id) {
+    App\Task::findOrFail($id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'status_id' => $request->status_id,
+    ]);
+});
 ```
+- Task.php: little changes to control the data flow
+- ExampleComponent.vue: I hope the methods are self-explanatory
+- drag and drop: [I used this amazing tool](https://www.npmjs.com/package/vuedraggable) to make the three lists more dynamic and fun to play with. 
 
-Each task should have its *title* and *description*. They need to be grouped by status in columns in order, and this columns may be draggables to reorder them.
-
-### Second Exercise
-We need to update, create and delete tasks. You will need to implement back and front functionality in order to achieve this goal.
-
-We need to be able to:
-
-* Delete an existing task
-* Adding a new task
-* Update data from task (title, description, status)
-* Reorder columns content and the columns themselves
-
-We will appreciate some of this extra functionalities:
-
-* Change task status and reorder columns with drag&drop
-* Be able to create new tasks without popups
-* Be able to add new status dinamically
-
-## Pieces of advice
-
-We will love to receive your code, even if you are not interested in working with us!. We will like your app if:
-
-* You follow clean coding practices
-* You use git properly
-* You think about the UX a little bit
-
-Let us know if you have any question or feedback.
-
-Hope to see your code soon!
+Thank you for your time, I have greatly enjoyed developing my first Laravell/Vue application, and I sincerely hope I'll be given the change to do more :) 
