@@ -14,10 +14,9 @@
     </head>
     <body>
         <div id="app" class="container">
-            <example-component
-                :tasks="{{ $tasks }}"
-                :status="{{ $status }}"
-            ></example-component>
+            <navbar></navbar>
+            <example-component></example-component>
+            <custom-footer></custom-footer>
         </div>
 
         <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>

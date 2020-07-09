@@ -1,9 +1,9 @@
 AVIRATO FULL-STACK CHALLENGE
 =====================
 
-Welcome to our Full-Stack challenge!
+Thank you for having me!
 
-This project includes the scaffold in order to start the code challenge. You will need to proceed with installation and configuration and after that, you can do the exercise. It will have 3 main parts we are going to explain. This code challenge has been made in order to test fullstack skills. You will need to use **Laravel**, **MySQL** and **Vue**. If you want to add any CSS preprocessor or similar, please use **SCSS**.
+I am pleased to have, at last, the opportunity to stick my fingers into **Laravel**, **MySQL** and **Vue** ... and **SCSS**.
 
 Once you have done your code challenge send us your github repository link to [empleo@avirato.com](mailto:empleo@avirato.com) with *Full-Stack Challenge* as subject.
 
@@ -11,17 +11,18 @@ Once you have done your code challenge send us your github repository link to [e
 
 In this project you only have to configure the environment variables to connect to your own [MySQL server](https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/).
 
-Fork the repo from this link and clone this project into your desired folder.
+### Git good practices:
+The repository was "mirrored", as opposed to a regular "clone":
+[Importing a Git repository using the command line](https://docs.github.com/en/github/importing-your-projects-to-github/importing-a-git-repository-using-the-command-line)
+
+### Install all the dependencies 
+I had to install Composer, as I am new to PHP
+[Install Composer and PHP on Windows 10](https://devanswers.co/install-composer-php-windows-10/)
 
 ```
-git@github.com:[YOUR_USER]/full-stack-challenge.git
-```
-
-Install all the dependencies (we use `composer` and `npm`), both back and front. This can be done from the *root* of the project.
-
-```
-composer install
+composer install // You can't run .bat files in Git Bash, had to run it from Command Prompt
 npm install
+
 ```
 
 Once all the dependencies are ready, modify the *.env* and configure your database credentials.
@@ -30,19 +31,27 @@ In order to migrate and seed the database with some random data run this command
 ```
 php artisan migrate:fresh --seed
 ```
-
+### First time using Laravel, so had to update php.ini with:
+```javascript
+extension=mysqli
+extension=php_pdo_mysql.dll
+```
+### Connect to the localhost server and create a new DB, from MySQL Bash
+```javascript
+\connect root@localhost
+CREATE DATABASE laravel;
+```
 Run the development server and compile front-end assets with the following commands.
 
 ```
 php artisan serve
 npm run hot
 ```
+The app is now running on `http://localhost:8000`.
 
-Now you will have everything running so you can go ahead to `http://localhost:8000` and proceed with the code challenge.
+### SCSS:
+For this exercise, I used a cool [stylesheet](https://bootswatch.com/sketchy/), to make my life easier.
 
-## Exercises
-
-This code challenge have some small tasks. You don´t have to do all the exercises. The more you do, the better knowledge we will have about you.
 
 ### First exercise
 We have a list of 15 tasks and we need to represent them as in a TodoApp. You are free to use any way to organize your components, styles, etc. You have to use `Vue` but you are free to use any kind of styles or UI Library. This project is ready to work with ES6/ES7 so feel free to use the last characteristics of JavaScript in your code.

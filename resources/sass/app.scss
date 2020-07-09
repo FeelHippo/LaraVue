@@ -3,7 +3,10 @@
 
 // Variables
 @import 'variables';
-
+// Variables Overrides
+@import "~bootswatch/dist/sketchy/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/sketchy/bootswatch";
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 

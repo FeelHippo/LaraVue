@@ -10,4 +10,6 @@ class Task extends Model
     use TaskRelationship;
 
     protected $table = 'task';
+    protected $fillable = ['id', 'title', 'description', 'status_id'];
+    protected $hidden = ['created_at', 'updated_at'];
 }
