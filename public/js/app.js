@@ -2010,6 +2010,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2043,6 +2051,12 @@ __webpack_require__.r(__webpack_exports__);
         _this2.status = response.data;
       });
     },
+    changeStatus: function changeStatus(event) {
+      this.task.status_id = event.target.value;
+    },
+    toggleEdit: function toggleEdit() {
+      this.edit = !this.edit;
+    },
     createTask: function createTask() {
       this.$http.post('api/tasks/store', this.task);
       this.task = {
@@ -2055,7 +2069,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchTaskList();
     },
     updateTask: function updateTask(id) {
-      this.$http.patch('api/task/' + id, this.task);
+      this.$http.patch('api/tasks/' + id, this.task);
       this.task = {
         id: '',
         title: '',
@@ -2066,18 +2080,20 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchTaskList();
     },
     showTask: function showTask(id) {
-      this.$http.get('api/task/' + id).then(function (response) {
-        this.task.id = response.data.id;
-        this.task.title = response.data.title;
-        this.description = response.data.description;
-        this.status_id = response.data.status_id;
+      var _this3 = this;
+
+      this.$http.get('api/tasks/' + id).then(function (response) {
+        _this3.task = response.data;
       });
-      this.$els.taskinput.focus();
+      this.$refs.taskinput.focus();
       this.edit = true;
     },
     deleteTask: function deleteTask(id) {
-      this.$http["delete"]('api/task/' + id);
-      this.fetchTaskList();
+      var _this4 = this;
+
+      this.$http["delete"]('api/tasks/' + id).then(function () {
+        _this4.fetchTaskList();
+      });
     }
   }
 });
@@ -38309,12 +38325,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row justify-content-center" }, [
-    _c("h4", [_vm._v("New Task")]),
-    _vm._v(" "),
+  return _c("div", { staticClass: "row justify-content-center centerPiece" }, [
     _c(
       "form",
       {
+        staticClass: "taskForm",
         attrs: { action: "#" },
         on: {
           submit: function($event) {
@@ -38384,36 +38399,11 @@ var render = function() {
           _c(
             "select",
             {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.task.id,
-                  expression: "task.id"
-                }
-              ],
               staticClass: "form-control",
               on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.task,
-                      "id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  function($event) {
-                    return _vm.onChange($event)
-                  }
-                ]
+                change: function($event) {
+                  return _vm.changeStatus($event)
+                }
               }
             },
             [
@@ -38471,70 +38461,106 @@ var render = function() {
                 attrs: { type: "submit" }
               },
               [_vm._v("\n                    Edit Task\n                ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.edit,
+                    expression: "edit"
+                  }
+                ],
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.toggleEdit()
+                  }
+                }
+              },
+              [_vm._v("\n                    Cancel\n                ")]
             )
           ])
         ])
       ]
     ),
     _vm._v(" "),
-    _c("h4", [_vm._v(_vm._s(_vm.status[0].title))]),
+    _c("h4", { staticClass: "status1" }, [_vm._v(_vm._s(_vm.status[0].title))]),
     _vm._v(" "),
     _c(
       "ul",
+      { staticClass: "column1" },
       [
         _vm._l(_vm.list, function(task) {
           return [
             task.status_id === _vm.status[0].id
-              ? _c("li", { key: task.body, staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "card border-primary mb-1",
-                      staticStyle: { "max-width": "20rem" }
-                    },
-                    [
-                      _c("div", { staticClass: "card-header" }, [
-                        _vm._v(_vm._s(task.title))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h4", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(task.description))
+              ? _c(
+                  "li",
+                  { key: task.body, staticClass: "list-group-item taskCard" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card border-primary mb-1",
+                        staticStyle: { "max-width": "20rem" }
+                      },
+                      [
+                        _c("div", { staticClass: "card-header" }, [
+                          _vm._v(_vm._s(task.title))
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v(_vm._s(task.status))
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("h4", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(task.description))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v(_vm._s(task.status))
+                          ])
                         ])
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-warning btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.showTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Edit\n                ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.deleteTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Delete\n                ")]
-                  )
-                ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("section", { staticClass: "frontCardButtons" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-warning btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.showTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Edit\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Delete\n                    "
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
               : _vm._e()
           ]
         })
@@ -38542,64 +38568,79 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _c("h4", [_vm._v(_vm._s(_vm.status[1].title))]),
+    _c("h4", { staticClass: "status2" }, [_vm._v(_vm._s(_vm.status[1].title))]),
     _vm._v(" "),
     _c(
       "ul",
+      { staticClass: "column2" },
       [
         _vm._l(_vm.list, function(task) {
           return [
             task.status_id === _vm.status[1].id
-              ? _c("li", { key: task.body, staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "card border-primary mb-1",
-                      staticStyle: { "max-width": "20rem" }
-                    },
-                    [
-                      _c("div", { staticClass: "card-header" }, [
-                        _vm._v(_vm._s(task.title))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h4", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(task.description))
+              ? _c(
+                  "li",
+                  { key: task.body, staticClass: "list-group-item taskCard" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card border-primary mb-1",
+                        staticStyle: { "max-width": "20rem" }
+                      },
+                      [
+                        _c("div", { staticClass: "card-header" }, [
+                          _vm._v(_vm._s(task.title))
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v(_vm._s(task.status))
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("h4", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(task.description))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v(_vm._s(task.status))
+                          ])
                         ])
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-warning btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.showTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Edit\n                ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.deleteTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Delete\n                ")]
-                  )
-                ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("section", { staticClass: "frontCardButtons" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-warning btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.showTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Edit\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Delete\n                    "
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
               : _vm._e()
           ]
         })
@@ -38607,64 +38648,79 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _c("h4", [_vm._v(_vm._s(_vm.status[2].title))]),
+    _c("h4", { staticClass: "status3" }, [_vm._v(_vm._s(_vm.status[2].title))]),
     _vm._v(" "),
     _c(
       "ul",
+      { staticClass: "column3" },
       [
         _vm._l(_vm.list, function(task) {
           return [
             task.status_id === _vm.status[2].id
-              ? _c("li", { key: task.body, staticClass: "list-group-item" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "card border-primary mb-1",
-                      staticStyle: { "max-width": "20rem" }
-                    },
-                    [
-                      _c("div", { staticClass: "card-header" }, [
-                        _vm._v(_vm._s(task.title))
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h4", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(task.description))
+              ? _c(
+                  "li",
+                  { key: task.body, staticClass: "list-group-item taskCard" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card border-primary mb-1",
+                        staticStyle: { "max-width": "20rem" }
+                      },
+                      [
+                        _c("div", { staticClass: "card-header" }, [
+                          _vm._v(_vm._s(task.title))
                         ]),
                         _vm._v(" "),
-                        _c("p", { staticClass: "card-text" }, [
-                          _vm._v(_vm._s(task.status))
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("h4", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(task.description))
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "card-text" }, [
+                            _vm._v(_vm._s(task.status))
+                          ])
                         ])
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-warning btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.showTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Edit\n                ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger btn-xs pull-right",
-                      on: {
-                        click: function($event) {
-                          return _vm.deleteTask(task.id)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Delete\n                ")]
-                  )
-                ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("section", { staticClass: "frontCardButtons" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-warning btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.showTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Edit\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-xs pull-right",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteTask(task.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Delete\n                    "
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
               : _vm._e()
           ]
         })

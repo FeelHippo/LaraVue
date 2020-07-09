@@ -2,11 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables';
-// Variables Overrides
-@import "~bootswatch/dist/sketchy/variables";
-@import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/sketchy/bootswatch";
+@import '~bootswatch/dist/minty/variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import "~bootswatch/dist/minty/bootswatch";
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
@@ -15,6 +17,73 @@ html, body {
     color: #636b6f;
     font-family: 'Nunito', sans-serif;
     font-weight: 200;
+    width: 100vw;
     height: 100vh;
     margin: 0;
+    padding: 0;
+}
+
+.centerPiece {
+    margin-top: 2rem;
+    width: auto;
+    height: auto;
+    display: grid;
+    grid-template-areas: 
+        "search search search"
+        "status1 status2 status3"
+        "column1 column2 column3"
+        "column1 column2 column3"
+        "column1 column2 column3";
+}
+
+.taskForm {
+    grid-area: search;
+    margin-bottom: 2rem;
+}
+
+.status1 {
+    grid-area: status1;
+    text-align: center;
+}
+
+.status2 {
+    grid-area: status2;
+    text-align: center;
+}
+
+.status3 {
+    grid-area: status3;
+    text-align: center;
+}
+
+.column1 {
+    grid-area: column1;
+    padding: 0;
+}
+
+.column2 {
+    grid-area: column2;
+    padding: 0;
+}
+
+.column3 {
+    grid-area: column3;
+    padding: 0;
+}
+
+.taskCard {
+    max-width: 14rem;
+    margin: 0 auto;
+    width: 100%; 
+    height: auto;
+}
+
+.frontCardButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.frontCardButtons button {
+    width: 100%;
 }
